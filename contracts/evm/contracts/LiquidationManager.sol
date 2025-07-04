@@ -8,12 +8,11 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./ChainlinkPriceFeed.sol";
 
-interface ILendingPool {
+interface ILayerZeroLending {
     function getUserPosition(address user) external view returns (
         uint256 totalCollateralValue,
         uint256 totalBorrowValue,
-        uint256 healthFactor,
-        uint256 maxBorrowValue
+        uint256 healthFactor
     );
 
     function getUserAssetBalance(address user, address asset) external view returns (
@@ -21,9 +20,13 @@ interface ILendingPool {
         uint256 borrowBalance
     );
 
-    function liquidate(address user, address collateralAsset, address debtAsset, uint256 debtAmount) external;
+    function liquidate(address user, address collateralAsset, address debtAsset, uint256 debtToCover) external;
 
-    function getSupportedAssets() external view returns (address[] memory);
+    function getAssetConfiguration(address asset) external view returns (
+        bool isSupported,
+        uint256 ltv,
+        uint256 liquidationThreshold
+    );
 }
 
 contract LiquidationManager is Ownable, ReentrancyGuard {
@@ -37,7 +40,7 @@ contract LiquidationManager is Ownable, ReentrancyGuard {
     uint256 public constant LIQUIDATION_BONUS = 5e16; // 5% bonus for liquidators
 
     // State variables
-    ILendingPool public lendingPool;
+    ILayerZeroLending public lendingPool;
     ChainlinkPriceFeed public priceFeed;
 
     // Liquidation configuration per asset
@@ -97,7 +100,7 @@ contract LiquidationManager is Ownable, ReentrancyGuard {
     }
 
     constructor(address _lendingPool, address _priceFeed) Ownable(msg.sender) {
-        lendingPool = ILendingPool(_lendingPool);
+        lendingPool = ILayerZeroLending(_lendingPool);
         priceFeed = ChainlinkPriceFeed(_priceFeed);
     }
 
@@ -135,7 +138,7 @@ contract LiquidationManager is Ownable, ReentrancyGuard {
      * @return healthFactor Current health factor
      */
     function canLiquidate(address user) external view returns (bool liquidatable, uint256 healthFactor) {
-        (, , healthFactor, ) = lendingPool.getUserPosition(user);
+        (, , healthFactor) = lendingPool.getUserPosition(user);
         liquidatable = healthFactor < LIQUIDATION_THRESHOLD && healthFactor > 0;
     }
 
@@ -164,8 +167,15 @@ contract LiquidationManager is Ownable, ReentrancyGuard {
         if (userDebt == 0 || userCollateral == 0) return (0, 0, 0);
 
         // Get liquidation config
+        (bool isSupported, , uint256 liquidationThreshold) = lendingPool.getAssetConfiguration(debtAsset);
+        if (!isSupported) revert LiquidationConfigNotFound();
+
         LiquidationConfig memory config = liquidationConfigs[debtAsset];
-        if (!config.isActive) config = _getDefaultConfig();
+        if (!config.isActive) {
+             config.liquidationThreshold = liquidationThreshold;
+             config.liquidationBonus = LIQUIDATION_BONUS;
+             config.closeFactor = MAX_LIQUIDATION_CLOSE_FACTOR;
+        }
 
         // Calculate maximum liquidatable debt (based on close factor)
         uint256 maxLiquidatableDebt = (userDebt * config.closeFactor) / PRECISION;
@@ -216,8 +226,14 @@ contract LiquidationManager is Ownable, ReentrancyGuard {
         if (debtAmount == 0 || debtAmount > userDebt) revert InvalidLiquidationAmount();
 
         // Get liquidation config
+        (bool isSupported, , ) = lendingPool.getAssetConfiguration(debtAsset);
+        if (!isSupported) revert LiquidationConfigNotFound();
+
         LiquidationConfig memory config = liquidationConfigs[debtAsset];
-        if (!config.isActive) config = _getDefaultConfig();
+        if (!config.isActive) {
+             config.closeFactor = MAX_LIQUIDATION_CLOSE_FACTOR;
+             config.liquidationBonus = LIQUIDATION_BONUS;
+        }
 
         // Check close factor
         uint256 maxLiquidatableDebt = (userDebt * config.closeFactor) / PRECISION;
@@ -307,7 +323,7 @@ contract LiquidationManager is Ownable, ReentrancyGuard {
         healthFactors = new uint256[](length);
 
         for (uint256 i = 0; i < length; i++) {
-            (, , healthFactors[i], ) = lendingPool.getUserPosition(users[i]);
+            (, , healthFactors[i]) = lendingPool.getUserPosition(users[i]);
             liquidatable[i] = healthFactors[i] < LIQUIDATION_THRESHOLD && healthFactors[i] > 0;
         }
     }
@@ -318,7 +334,7 @@ contract LiquidationManager is Ownable, ReentrancyGuard {
      */
     function monitorPositions(address[] calldata users) external {
         for (uint256 i = 0; i < users.length; i++) {
-            (, , uint256 healthFactor, ) = lendingPool.getUserPosition(users[i]);
+            (, , uint256 healthFactor) = lendingPool.getUserPosition(users[i]);
 
             if (healthFactor < LIQUIDATION_THRESHOLD && healthFactor > 0) {
                 emit UnhealthyPositionDetected(users[i], healthFactor);
@@ -391,7 +407,7 @@ contract LiquidationManager is Ownable, ReentrancyGuard {
      */
     function updateLendingPool(address newLendingPool) external onlyOwner {
         require(newLendingPool != address(0), "Invalid address");
-        lendingPool = ILendingPool(newLendingPool);
+        lendingPool = ILayerZeroLending(newLendingPool);
     }
 
     /**

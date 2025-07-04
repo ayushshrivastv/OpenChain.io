@@ -4,10 +4,13 @@ members = [
 ]
 resolver = "2"
 
+[patch.crates-io]
+# Remove patch as we are downgrading dependencies
+# solana-program = { git = "https://github.com/solana-labs/solana.git", rev = "v1.18.18" }
+
 [workspace.dependencies]
-anchor-lang = "0.31.1"
-anchor-spl = "0.31.1"
-solana-program = "2.1.0"
+anchor-lang = "0.29.0"
+anchor-spl = "0.29.0"
 borsh = "0.10.3"
 thiserror = "1.0.50"
 

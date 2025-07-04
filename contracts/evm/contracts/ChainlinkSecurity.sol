@@ -8,12 +8,12 @@ import "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 
-interface ILendingPool {
-    function getUserPosition(address user) external view returns (uint256, uint256, uint256, uint256);
-    function liquidate(address user, address collateralAsset, address debtAsset, uint256 debtAmount) external;
+interface ILayerZeroLending {
+    function getUserPosition(address user) external view returns (uint256, uint256, uint256);
+    function liquidate(address user, address collateralAsset, address debtAsset, uint256 debtToCover) external;
     function pause() external;
     function unpause() external;
-    function getUnhealthyUsers() external view returns (address[] memory);
+    function getAssetConfiguration(address asset) external view returns (bool, uint256, uint256);
 }
 
 /**
@@ -34,7 +34,7 @@ contract ChainlinkSecurity is
     Pausable
 {
     VRFCoordinatorV2Interface private vrfCoordinator;
-    ILendingPool public lendingPool;
+    ILayerZeroLending public lendingPool;
 
     // VRF Configuration
     uint64 private subscriptionId;
@@ -116,7 +116,7 @@ contract ChainlinkSecurity is
         ConfirmedOwner(msg.sender)
     {
         vrfCoordinator = VRFCoordinatorV2Interface(_vrfCoordinator);
-        lendingPool = ILendingPool(_lendingPool);
+        lendingPool = ILayerZeroLending(_lendingPool);
         subscriptionId = _subscriptionId;
         keyHash = _keyHash;
         lastEmergencyReset = block.timestamp;
