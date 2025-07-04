@@ -18,7 +18,7 @@ It's like having one bank account that works everywhere - you keep your assets w
 
 No more selling assets or expensive bridging fees. Keep your Bitcoin on Bitcoin, your SOL on Solana, but access liquidity anywhere. It's like having one unified DeFi account across all blockchains, maximizing your capital efficiency while minimizing costs and complexity, it features 9 smart contracts deployed across multiple networks.
 
-For a reference of the LayerZero V2 contract in the code, please see [`contracts/evm/contracts/LayerZeroLending.sol`](contracts/evm/contracts/LayerZeroLending.sol).
+For the full story of the LayerZero V2 integration, please see the [migration journey documentation](CrossChain/LayerZero.md).
 
 OpenChain is still not perfect. I’ve written extensively on the backend side—covering smart contracts, Chainlink security, LayerZero messaging, Chainlink Automation, Chainlink VRF, and much more. However, I wasn’t able to fully integrate it on the frontend side. Not being a frontend engineer made this even more challenging, as working on the frontend and navigating documentation was unfamiliar territory.
 
