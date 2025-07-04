@@ -19,14 +19,14 @@ export function Dashboard() {
             <h1 className="text-5xl font-extrabold text-white leading-tight">
               Your Portal to Crosschain Liquidity. Lend, borrow, and manage assets anywhere.
             </h1>
-            {/* Chainlink SVG Image */}
-            <a href="https://docs.chain.link/ccip" target="_blank" rel="noopener noreferrer">
+            {/* LayerZero SVG Image */}
+            <a href="https://docs.layerzero.network" target="_blank" rel="noopener noreferrer">
               <div className="w-72 h-72 bg-[#0E1F4B] rounded-full flex items-center justify-center p-2 transition-transform duration-300 ease-in-out hover:scale-105 animate-rainbow-border">
                 <Image
-                  src="/Chainlink.svg"
-                  alt="Chainlink Logo"
-                  width={280}
-                  height={280}
+                  src="/Layerzero.webp"
+                  alt="LayerZero Logo"
+                  width={240}
+                  height={240}
                   className="object-contain"
                 />
               </div>
