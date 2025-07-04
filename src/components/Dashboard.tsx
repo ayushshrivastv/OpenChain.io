@@ -23,7 +23,7 @@ export function Dashboard() {
             <a href="https://docs.layerzero.network" target="_blank" rel="noopener noreferrer">
               <div className="w-72 h-72 bg-[#0E1F4B] rounded-full flex items-center justify-center p-2 transition-transform duration-300 ease-in-out hover:scale-105 animate-rainbow-border">
                 <Image
-                  src="/Layerzero.webp"
+                  src="/layerzero.webp"
                   alt="LayerZero Logo"
                   width={240}
                   height={240}
