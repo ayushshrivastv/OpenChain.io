@@ -1,27 +1,47 @@
-# OpenChain: Cross Chain Lending & Borrowing Protocol, Powered by Chainlink
+# OpenChain
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Next.js](https://img.shields.io/badge/Next.js-15.3.4-black)](https://nextjs.org/)
 [![Solidity](https://img.shields.io/badge/Solidity-^0.8.24-blue)](https://soliditylang.org/)
+[![LayerZero](https://img.shields.io/badge/LayerZero-V2-blue)](https://layerzero.network/)
 [![Chainlink](https://img.shields.io/badge/Chainlink-CCIP-blue)](https://chain.link/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
 [![Anchor](https://img.shields.io/badge/Anchor-0.31.1-purple)](https://www.anchor-lang.com/)
 
-## The Story Behind OpenChain
+## Cross Chain Lending & Borrowing Protocol, Powered by Chainlink and Layer Zero
 
-Building OpenChain started with a simple frustration during one of my late-night DeFi sessions. I had ETH sitting on Ethereum earning minimal yield, but I needed USDC liquidity on Solana for a trading opportunity. The existing solutions were either centralized bridges that made me nervous, wrapped tokens that felt like band-aids, or complex protocols that required moving everything to one chain. I kept thinking, "Why can't I just use my ETH as collateral on Ethereum to borrow USDC directly on Solana?"
+Unlock Liquidity Across All Blockchains
 
-That question led me down a six-month rabbit hole of cross-chain architecture, Chainlink integrations, and more debugging sessions than I care to remember. What started as "maybe a few weeks of work" became a complete reimagining of how cross-chain lending should work. I wanted to build something that felt native to each blockchain while maintaining the security and decentralization that makes DeFi special.
+Today, if you have ETH on Ethereum but need to borrow USDC on Solana, you must either sell your ETH or pay expensive bridging fees. OpenChain lending solves this by letting you deposit ETH as collateral on Ethereum and instantly borrow USDC on Solana using LayerZero's omnichain messaging.
 
-The breakthrough came when I discovered Chainlink CCIP. Unlike traditional bridges that move tokens between chains, CCIP enables secure message passing that lets assets stay on their native chains while unlocking cross-chain functionality. Your ETH never leaves Ethereum, but you can still borrow against it on Solana. That's when I knew this could actually work.
+It's like having one bank account that works everywhere - you keep your assets where they are, but access liquidity wherever you need it. This eliminates expensive transfers, reduces fees, and unlocks better rates across different blockchain ecosystems seamlessly.
+
+No more selling assets or expensive bridging fees. Keep your Bitcoin on Bitcoin, your SOL on Solana, but access liquidity anywhere. It's like having one unified DeFi account across all blockchains, maximizing your capital efficiency while minimizing costs and complexity, it features 9 smart contracts deployed across multiple networks.
+
+OpenChain is still not perfect. I’ve written extensively on the backend side—covering smart contracts, Chainlink security, LayerZero messaging, Chainlink Automation, Chainlink VRF, and much more. However, I wasn’t able to fully integrate it on the frontend side. Not being a frontend engineer made this even more challenging, as working on the frontend and navigating documentation was unfamiliar territory.
+
+The most challenging part was adding a real time price feed. I kept encountering issues with it, and incorporating the price feed into the frontend turned out to be the most difficult task for me. I started working on it very late, around June 28th, and it felt more like a panic driven scramble than a structured process of finding solutions through Stack Overflow or documentation.
+
+Thank You, Bharath for patiently answering every question on Discord—it made working around these issues much easier and thanks to Dave for explaining the LayerZero integration on Solana so clearly. That really helped me understand the underlying architecture better.
+
+### Your Portal to Crosschain Liquidity. Lend, borrow, and manage assets anywhere.
+
+<img src="https://github.com/user-attachments/assets/f430b08a-06b4-4965-abef-a898a58e160b" width="700"/>
+
+### Cross Chain: Unlock Liquidity Across All Blockchains
+
+<img src="https://github.com/user-attachments/assets/595abe54-c739-4d55-9c06-7047a4a0cfef" width="700"/>
+
+<img src="https://github.com/user-attachments/assets/d516ef04-0c39-4511-af4f-816b04d1b819" width="700"/>
+
 
 ## How It Actually Works
 
-OpenChain uses Chainlink's Cross-Chain Interoperability Protocol to create a unified lending experience across multiple blockchains. When you deposit ETH as collateral on Ethereum, the protocol doesn't wrap it or bridge it anywhere. Instead, it securely communicates with our Solana program through CCIP, enabling you to mint synthetic USDC backed by your real ETH collateral.
+OpenChain uses LayerZero's omnichain messaging protocol to create a unified lending experience across multiple blockchains. When you deposit ETH as collateral on Ethereum, the protocol doesn't wrap it or bridge it anywhere. Instead, it securely communicates with our Solana program through LayerZero, enabling you to mint synthetic USDC backed by your real ETH collateral.
 
-The magic happens in the message validation. Every cross-chain transaction is cryptographically verified through Chainlink's decentralized oracle network before execution. This means your collateral is always protected by the same security guarantees that secure billions in DeFi value. The synthetic assets you receive are fully backed by real collateral, with real-time price feeds ensuring proper collateralization ratios.
+The magic happens in the message validation and execution. Every cross chain transaction is verified and delivered through LayerZero's configurable security stack. The synthetic assets you receive are fully backed by real collateral, with real time price feeds ensuring proper collateralization ratios.
 
-I spent weeks getting the price feed integration right. The `0x14aebe68` error signature became my nemesis during development - that cryptic message appeared every time a price feed wasn't properly configured. But once I implemented proper fallback mechanisms using both Chainlink oracles and CoinGecko APIs, the system became incredibly robust. Now users get real-time pricing with multiple layers of redundancy.
+I spent days getting the price feed integration right. The `0x14aebe68` error signature became my nemesis during development - that cryptic message appeared every time a price feed wasn't properly configured. But once I implemented proper fallback mechanisms using both Chainlink oracles and CoinGecko APIs, the system became incredibly robust. Now users get real time pricing with multiple layers of redundancy.
 
 ## The Technology Stack
 
@@ -29,7 +49,7 @@ The frontend is built with Next.js 15.3.4 because I wanted something fast and re
 
 For wallet integration, I chose wagmi + viem + RainbowKit. The type safety is incredible once you stop fighting TypeScript and embrace it. RainbowKit makes connecting wallets feel magical, supporting everything from MetaMask to WalletConnect to hardware wallets. The interface is designed to feel familiar - like MetaMask but optimized for cross-chain operations.
 
-The smart contracts are where the real complexity lives. I started with OpenZeppelin templates because security isn't something you improvise. Every contract has reentrancy protection, role-based access control, and time-locked governance. The rate limiting prevents flash loan attacks, and the emergency pause functionality means we can stop everything if something goes wrong.
+The smart contracts are where the real complexity lives. I started with OpenZeppelin templates because security isn't something you improvise. Every contract has reentrancy protection, role-based access control, and time locked governance. The rate limiting prevents flash loan attacks, and the emergency pause functionality means we can stop everything if something goes wrong.
 
 The Solana integration using Anchor Framework was probably the most challenging part. Rust has a steep learning curve, but the performance and security guarantees are unmatched. The program handles cross-chain message verification and synthetic asset minting with the same security standards as the Ethereum contracts.
 
@@ -45,9 +65,9 @@ For developers who want to dig deeper, the smart contract commands are simple: `
 
 OpenChain isn't just another DeFi protocol - it's a reimagining of how cross-chain finance should work. Your assets stay on their native chains where they belong, but you get the liquidity and opportunities of a unified ecosystem. No wrapped tokens, no bridge risks, no compromises on security.
 
-The user experience feels familiar because I designed it to work like the wallets people already know. The MetaMask-style interface shows your portfolio across all chains in one view. Real-time health factor monitoring prevents liquidations, and the automated systems handle the complex cross-chain coordination behind the scenes.
+The user experience feels familiar because I designed it to work like the wallets people already know. Real time health factor monitoring prevents liquidations, and the automated systems handle the complex cross-chain coordination behind the scenes.
 
-Security was the top priority throughout development. Every contract has been audited, every function has comprehensive tests, and every cross-chain message is cryptographically verified. The time-locked governance means no sudden changes, and the emergency systems can pause everything if needed.
+Security was the top priority throughout development. Every contract has been audited, every function has comprehensive tests, and every cross chain message is cryptographically verified. The time locked governance means no sudden changes, and the emergency systems can pause everything if needed.
 
 ## The Road Ahead
 
@@ -65,12 +85,4 @@ Building OpenChain taught me that "impossible" usually just means "I haven't fig
 
 ---
 
-**Live Application**: [https://crosschain.io](https://crosschain.io) | **GitHub**: [OpenChain Repository](https://github.com/ayushshrivastv/OpenChain) | **Documentation**: [Technical Docs](https://docs.crosschain.io)
-
-**Latest Update**: January 2025 - Production deployment with MetaMask-style UX and bulletproof security.
-
-
-
-
-
-
+**Application**: [https://openchains.vercel.app) | **GitHub**: [OpenChain Repository](https://github.com/ayushshrivastv/OpenChain) | **Documentation**: [Technical Docs](https://openchains.vercel.app/docs)
