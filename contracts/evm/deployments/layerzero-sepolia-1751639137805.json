@@ -1,0 +1,8 @@
+{
+  "network": "sepolia",
+  "chainId": 11155111,
+  "deployer": "0x31A09F533045988A6e7a487cc6BD50F9285BCBd1",
+  "lendingPool": "0x6e68fA3EF36f41c4c3031a8B721727EC577F5E40",
+  "syntheticUSDC": "0xF61f5C31f1b453b3639BB22fd49b6027FC341Dd9",
+  "timestamp": "2025-07-04T14:25:37.805Z"
+}

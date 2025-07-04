@@ -1,0 +1,45 @@
+[package]
+name = "lending_pool"
+version = "0.1.0"
+description = "Cross-chain lending pool program"
+edition = "2021"
+license = "MIT"
+authors = ["Cross-Chain DeFi Team"]
+repository = "https://github.com/your-org/cross-chain-defi-protocol"
+keywords = ["solana", "defi", "lending", "cross-chain", "chainlink"]
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "lending_pool"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = []
+test-sbf = []
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+# Core Anchor dependencies - using workspace versions
+anchor-lang = { workspace = true }
+anchor-spl = { workspace = true }
+
+# Solana program dependency - pinned to specific version
+solana-program = { workspace = true }
+
+# Serialization - using workspace version
+borsh = { workspace = true }
+
+# Error handling - using workspace version
+thiserror = { workspace = true }
+
+# Security: Updated to avoid vulnerabilities
+# Note: These versions are chosen to avoid the security issues found in audit
+
+[dev-dependencies]
+# Test dependencies - using older stable versions from late 2023
+solana-program-test = "1.16"
+solana-sdk = "1.16"
+tokio = "1.0"
