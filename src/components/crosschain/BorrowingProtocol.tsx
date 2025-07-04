@@ -4,8 +4,8 @@ import { type Dispatch, type SetStateAction, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { DepositModal } from '@/components/DepositModal';
 import { useAccount, useWriteContract, useReadContract, useWaitForTransactionReceipt, useChainId } from 'wagmi';
-import { parseEther, formatEther } from 'viem';
-import { LENDING_POOL_ABI } from '@/lib/contracts';
+import { parseEther, formatEther, Address } from 'viem';
+import { LAYERZERO_LENDING_ABI, CONTRACT_ADDRESSES } from '@/lib/contracts';
 import { toast } from 'sonner';
 import { BorrowModal } from '@/components/BorrowModal';
 
@@ -48,8 +48,12 @@ export function BorrowingProtocol({ networks, selectedNetwork, setSelectedNetwor
 
   // Wagmi hooks for wallet integration
   const { address, isConnected } = useAccount();
+  const chainId = useChainId();
   const { writeContract, data: hash, isPending: isWritePending } = useWriteContract();
   
+  const contractInfo = CONTRACT_ADDRESSES[chainId as keyof typeof CONTRACT_ADDRESSES];
+  const lendingPoolAddress = contractInfo ? contractInfo.layerZeroLending as Address : undefined;
+
   // Wait for transaction confirmation
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
     hash,
@@ -82,9 +86,9 @@ export function BorrowingProtocol({ networks, selectedNetwork, setSelectedNetwor
 
   // Contract addresses - Updated to use LayerZero contract
   const CONTRACTS = {
-    LENDING_POOL: '0x6e68fA3EF36f41c4c3031a8B721727EC577F5E40', // LayerZero contract address
-    SYNTH_USDC: '0xF61f5C31f1b453b3639BB22fd49b6027FC341Dd9', // New synthetic USDC from LayerZero deployment
-    SYNTH_WETH: '0x39CdAe9f7Cb7e06A165f8B4C6864850cCef5CC44'
+    LENDING_POOL: lendingPoolAddress, // LayerZero contract address
+    SYNTH_USDC: contractInfo ? contractInfo.synthUSDC : undefined, // New synthetic USDC from LayerZero deployment
+    SYNTH_WETH: contractInfo ? contractInfo.synthWETH : undefined
   };
 
         // Enhanced price fetching from Chainlink smart contracts - NO MORE MOCK DATA!
@@ -154,23 +158,30 @@ export function BorrowingProtocol({ networks, selectedNetwork, setSelectedNetwor
       return;
     }
 
+    if (!lendingPoolAddress) {
+      toast.error('Contract address not found for this network.');
+      return;
+    }
+
     setIsLoading(true);
     try {
       const token = getNetworkTokens().find(t => t.symbol === tokenSymbol);
       if (!token) throw new Error('Token not found');
 
       const amountWei = parseEther(amount);
+      const options = "0x"; // Placeholder for LayerZero options
       
       // Direct smart contract call - REAL TRANSACTION!
       await writeContract({
-        address: CONTRACTS.LENDING_POOL as `0x${string}`,
-        abi: LENDING_POOL_ABI,
-        functionName: 'borrow',
+        address: lendingPoolAddress,
+        abi: LAYERZERO_LENDING_ABI,
+        functionName: 'borrowCrossChain',
         args: [
           token.address === 'native' ? '0x0000000000000000000000000000000000000000' : token.address as `0x${string}`, // asset
           amountWei, // amount
-          0n, // destChainSelector (0 for same chain)
+          0, // destEid (0 for same chain for now)
           address as `0x${string}`, // receiver
+          options,
         ],
       });
 
@@ -196,6 +207,11 @@ export function BorrowingProtocol({ networks, selectedNetwork, setSelectedNetwor
       return;
     }
 
+    if (!lendingPoolAddress) {
+      toast.error('Contract address not found for this network.');
+      return;
+    }
+
     setIsLoading(true);
     try {
       const token = getNetworkTokens().find(t => t.symbol === tokenSymbol);
@@ -205,8 +221,8 @@ export function BorrowingProtocol({ networks, selectedNetwork, setSelectedNetwor
       
       // Direct smart contract call - REAL TRANSACTION!
       await writeContract({
-        address: CONTRACTS.LENDING_POOL as `0x${string}`,
-        abi: LENDING_POOL_ABI,
+        address: lendingPoolAddress,
+        abi: LAYERZERO_LENDING_ABI,
         functionName: 'repay',
         args: [
           token.address === 'native' ? '0x0000000000000000000000000000000000000000' : token.address as `0x${string}`, // asset

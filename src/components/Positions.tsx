@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAccount, useReadContract, usePublicClient, useChainId } from 'wagmi';
 import { formatEther, type Address } from 'viem';
-import { LENDING_POOL_ABI } from '@/lib/contracts';
-import { CONTRACT_ADDRESSES } from '@/lib/wagmi';
+import { LAYERZERO_LENDING_ABI, CONTRACT_ADDRESSES } from '@/lib/contracts';
 import { getBlockExplorer } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -32,14 +31,14 @@ export default function Positions() {
     const publicClient = usePublicClient();
 
     const contractInfo = CONTRACT_ADDRESSES[chainId as keyof typeof CONTRACT_ADDRESSES];
-    const lendingPoolAddress = contractInfo ? contractInfo.lendingPool as Address : undefined;
+    const lendingPoolAddress = contractInfo ? contractInfo.layerZeroLending as Address : undefined;
 
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const { data: userPosition, isLoading: positionLoading } = useReadContract({
         address: lendingPoolAddress,
-        abi: LENDING_POOL_ABI,
+        abi: LAYERZERO_LENDING_ABI,
         functionName: 'getUserPosition',
         args: [address || "0x0000000000000000000000000000000000000000"],
         query: {

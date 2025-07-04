@@ -37,7 +37,7 @@ export function TransactionModal({
 }: TransactionModalProps) {
   const { address } = useAccount();
   const chainId = useChainId();
-  const { deposit, borrow, repay, withdraw, isLoading } = useTransactions();
+  const { deposit, borrowCrossChain, repayCrossChain, isLoading } = useTransactions();
 
   const [amount, setAmount] = useState("");
   const [selectedSourceChain, setSelectedSourceChain] = useState<number>(
@@ -88,22 +88,21 @@ export function TransactionModal({
           await deposit(
             asset,
             amount,
-            selectedSourceChain,
-            isCrossChain ? selectedDestChain : undefined,
           );
           break;
         case "borrow":
-          await borrow(
+          await borrowCrossChain(
             asset,
             amount,
-            isCrossChain ? selectedDestChain.toString() : undefined,
+            'sepolia',
           );
           break;
         case "repay":
-          await repay(asset, amount, selectedDestChain.toString());
+          await repayCrossChain(asset, amount, 'sepolia');
           break;
         case "withdraw":
-          await withdraw(asset, amount, selectedDestChain.toString());
+          // await withdraw(asset, amount, selectedDestChain.toString());
+          toast.error("Withdraw is not implemented yet.");
           break;
         default:
           throw new Error("Unknown transaction type");

@@ -1,6 +1,6 @@
 import { formatUnits } from "@/lib/contracts";
-import { CHAINLINK_PRICE_FEED_ABI, LENDING_POOL_ABI } from "@/lib/contracts";
-import { CONTRACT_ADDRESSES } from "@/lib/wagmi";
+import { LAYERZERO_LENDING_ABI } from "@/lib/contracts";
+import { CONTRACT_ADDRESSES } from "@/lib/contracts";
 import type { PriceData, UserPosition } from "@/types";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -13,57 +13,6 @@ export function useUserPosition() {
   const [position, setPosition] = useState<UserPosition | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [prices, setPrices] = useState<Record<string, PriceData>>({});
-
-  const fetchPrices = useCallback(async () => {
-    if (!publicClient || !chainId) return;
-
-    const contractAddresses =
-      CONTRACT_ADDRESSES[chainId as keyof typeof CONTRACT_ADDRESSES];
-    if (!contractAddresses) return;
-
-    try {
-      const assets = ["USDC", "WETH", "SOL"];
-      const priceData: Record<string, PriceData> = {};
-
-      // Only fetch prices for EVM chains with priceFeed contract
-      if ("priceFeed" in contractAddresses) {
-        for (const asset of assets) {
-          let assetAddress: string | undefined;
-          
-          if (asset === "USDC" && "synthUSDC" in contractAddresses) {
-            assetAddress = contractAddresses.synthUSDC;
-          } else if (asset === "WETH" && "synthWETH" in contractAddresses) {
-            assetAddress = contractAddresses.synthWETH;
-          }
-          
-          if (assetAddress) {
-            try {
-              const [price, isStale] = (await publicClient.readContract({
-                address: contractAddresses.priceFeed as `0x${string}`,
-                abi: CHAINLINK_PRICE_FEED_ABI,
-                functionName: "getSafePrice",
-                args: [assetAddress as `0x${string}`],
-              })) as [bigint, boolean];
-
-              priceData[asset] = {
-                asset,
-                price,
-                timestamp: Date.now(),
-                confidence: isStale ? 50 : 100, // Lower confidence if stale
-              };
-            } catch (err) {
-              console.warn(`Failed to fetch ${asset} price:`, err);
-            }
-          }
-        }
-      }
-
-      setPrices(priceData);
-    } catch (err) {
-      console.error("Error fetching prices:", err);
-    }
-  }, [publicClient, chainId]);
 
   const fetchUserPosition = useCallback(async () => {
     if (!address || !publicClient || !chainId) return;
@@ -82,8 +31,8 @@ export function useUserPosition() {
       // Fetch user position data from the lending pool
       const [totalCollateralValue, totalBorrowValue, healthFactor] =
         (await publicClient.readContract({
-          address: contractAddresses.lendingPool as `0x${string}`,
-          abi: LENDING_POOL_ABI,
+          address: contractAddresses.layerZeroLending as `0x${string}`,
+          abi: LAYERZERO_LENDING_ABI,
           functionName: "getUserPosition",
           args: [address],
         })) as [bigint, bigint, bigint];
@@ -92,46 +41,7 @@ export function useUserPosition() {
       const supportedAssets = ["USDC", "WETH", "SOL"];
       const collateralBalances: Record<string, bigint> = {};
       const borrowBalances: Record<string, bigint> = {};
-
-      // For each asset, get detailed asset information and calculate individual balances
-      // Since we have totalCollateralValue and totalBorrowValue, we'll distribute them
-      // proportionally based on asset prices (this is a simplified approach)
-      for (const asset of supportedAssets) {
-        let assetAddress: string | undefined;
-        
-        if (asset === "USDC" && "synthUSDC" in contractAddresses) {
-          assetAddress = contractAddresses.synthUSDC;
-        } else if (asset === "WETH" && "synthWETH" in contractAddresses) {
-          assetAddress = contractAddresses.synthWETH;
-        }
-        
-        if (assetAddress) {
-          try {
-            // Get asset configuration from the lending pool
-            const [collateral, borrowed] = (await publicClient.readContract({
-              address: contractAddresses.lendingPool as `0x${string}`,
-              abi: LENDING_POOL_ABI,
-              functionName: "getUserAssetBalance",
-              args: [address, assetAddress as `0x${string}`],
-            })) as [bigint, bigint];
-
-            collateralBalances[asset] = collateral;
-            borrowBalances[asset] = borrowed;
-          } catch (err) {
-            console.warn(`Failed to fetch ${asset} info:`, err);
-            collateralBalances[asset] = 0n;
-            borrowBalances[asset] = 0n;
-          }
-        } else {
-          // Asset not available on this chain
-          collateralBalances[asset] = 0n;
-          borrowBalances[asset] = 0n;
-        }
-      }
-
-      // Fetch current prices from Chainlink price feeds
-      await fetchPrices();
-
+      
       const userPosition: UserPosition = {
         user: address,
         totalCollateralValue,
@@ -173,14 +83,13 @@ export function useUserPosition() {
     } finally {
       setIsLoading(false);
     }
-  }, [address, publicClient, chainId, fetchPrices]);
+  }, [address, publicClient, chainId]);
 
   // Auto-refresh every 30 seconds for real-time updates
   useEffect(() => {
     if (!address || !publicClient) {
       // Clear position when wallet disconnected or client unavailable
       setPosition(null);
-      setPrices({});
       return;
     }
 
@@ -241,12 +150,10 @@ export function useUserPosition() {
 
   return {
     position,
-    prices,
     isLoading,
     error,
     healthStatus: getHealthStatus(),
     availableBorrowPower: getAvailableBorrowPower(),
     refetch: fetchUserPosition,
-    fetchPrices,
   };
 }

@@ -4,8 +4,7 @@ import { useState, useEffect, type Dispatch, type SetStateAction } from 'react';
 import Image from 'next/image';
 import { useReadContract, useChainId, useAccount, useBalance } from 'wagmi';
 import { formatEther } from 'viem';
-import { CONTRACT_ADDRESSES } from '@/lib/wagmi';
-import { CHAINLINK_PRICE_FEED_ABI } from '@/lib/contracts';
+import { CONTRACT_ADDRESSES } from '@/lib/contracts';
 import { DepositModal } from '@/components/DepositModal';
 import { getContractAddresses, DeployedContracts } from '../../lib/contracts';
 
