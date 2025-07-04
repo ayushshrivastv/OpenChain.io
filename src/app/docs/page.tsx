@@ -10,8 +10,8 @@ const TechIcon = ({ d }: { d: string }) => (
 );
 
 const sections = [
+    { id: 'layerzero', title: 'LayerZero', icon: "M12 2l-8 8h16L12 2zM4 14h16v6H4v-6z" },
     { id: 'price-feeds', title: 'Chainlink Price Feeds', icon: "M3 6l3 6h12l3-6H3zM3 18h18" },
-    { id: 'ccip', title: 'Chainlink CCIP', icon: "M12 2l-8 8h16L12 2zM4 14h16v6H4v-6z" },
     { id: 'automation', title: 'Chainlink Automation', icon: "M12 1v3m0 16v3m8.4-14.4l-2.1 2.1m-12.6 0L3.6 7.6M23 12h-3M4 12H1m16.4 8.4l-2.1-2.1M7.6 3.6L5.7 5.7" },
     { id: 'vrf', title: 'Chainlink VRF', icon: "M16 3.13a4 4 0 0 1 0 7.75L12 15l-4-4.12a4 4 0 0 1 0-7.75" },
 ];
@@ -48,15 +48,35 @@ const DocsPage = () => {
         {/* Right-side Content */}
         <main className="flex-1">
           <p className="text-2xl lg:text-3xl text-white mb-16 max-w-3xl">
-            A deep dive into the decentralized technologies from Chainlink that power and secure the OpenChain protocol.
+            A deep dive into the decentralized technologies from LayerZero and Chainlink that power and secure the OpenChain protocol.
           </p>
 
           <div className="space-y-12">
-            {/* Technology Insight Card: Price Feeds */}
-            <article id="price-feeds" className="scroll-mt-24 bg-[#F9DDC7] text-[#031138] p-8 rounded-2xl shadow-lg transition-shadow hover:shadow-xl">
+            {/* Technology Insight Card: LayerZero */}
+            <article id="layerzero" className="scroll-mt-24 bg-[#F9DDC7] text-[#031138] p-8 rounded-2xl shadow-lg transition-shadow hover:shadow-xl">
               <header className="flex items-center mb-6">
                 <TechIcon d={sections[0].icon} />
                 <h2 className="text-4xl font-extrabold">{sections[0].title}</h2>
+              </header>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-bold text-lg mb-2">Why I've Used It</h3>
+                  <p className="leading-relaxed">To enable the protocol's core functionality: true cross-chain lending and borrowing, allowing assets to be used seamlessly across different blockchains without wrapping or bridging.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg mb-2">How It Works in My Protocol</h3>
+                  <p className="leading-relaxed">
+                    My <code className="text-xs bg-black/10 px-1 py-0.5 rounded">LayerZeroLending.sol</code> contract leverages the LayerZero V2 messaging protocol to communicate between chains. When a user deposits collateral on a source chain, the contract sends a message via the LayerZero endpoint. On the destination chain, this message is received and verified, which then permits the borrowing of assets against the remote collateral. This architecture enables secure and efficient cross-chain value transfer without traditional asset bridging.
+                  </p>
+                </div>
+              </div>
+            </article>
+
+            {/* Technology Insight Card: Price Feeds */}
+            <article id="price-feeds" className="scroll-mt-24 bg-[#F9DDC7] text-[#031138] p-8 rounded-2xl shadow-lg transition-shadow hover:shadow-xl">
+              <header className="flex items-center mb-6">
+                <TechIcon d={sections[1].icon} />
+                <h2 className="text-4xl font-extrabold">{sections[1].title}</h2>
               </header>
               <div className="space-y-4">
                 <div>
@@ -66,27 +86,7 @@ const DocsPage = () => {
                 <div>
                   <h3 className="font-bold text-lg mb-2">How It Works in My Protocol</h3>
                   <p className="leading-relaxed">
-                    My <code className="text-xs bg-black/10 px-1 py-0.5 rounded">ChainlinkPriceFeed.sol</code> contract sources reliable, tamper-proof prices for all supported assets. The main <code className="text-xs bg-black/10 px-1 py-0.5 rounded">LendingPool.sol</code> contract constantly references these feeds to accurately value collateral, calculate borrowing power, and determine liquidation thresholds, forming the foundation of the protocol's financial security.
-                  </p>
-                </div>
-              </div>
-            </article>
-
-            {/* Technology Insight Card: CCIP */}
-            <article id="ccip" className="scroll-mt-24 bg-[#F9DDC7] text-[#031138] p-8 rounded-2xl shadow-lg transition-shadow hover:shadow-xl">
-              <header className="flex items-center mb-6">
-                <TechIcon d={sections[1].icon} />
-                <h2 className="text-4xl font-extrabold">{sections[1].title}</h2>
-              </header>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="font-bold text-lg mb-2">Why I've Used It</h3>
-                  <p className="leading-relaxed">To enable the protocol's core functionality: true cross-chain lending and borrowing, allowing assets to be used seamlessly across different blockchains.</p>
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg mb-2">How It Works in My Protocol</h3>
-                  <p className="leading-relaxed">
-                    My <code className="text-xs bg-black/10 px-1 py-0.5 rounded">LendingPool.sol</code> contract acts as a <code className="text-xs bg-black/10 px-1 py-0.5 rounded">CCIPReceiver</code>, allowing it to send and receive messages and tokens across chains via the secure Chainlink network. When a user deposits collateral on one chain to borrow on another, CCIP handles the complex task of securely communicating the transaction details, making interoperability a reality.
+                    My <code className="text-xs bg-black/10 px-1 py-0.5 rounded">ChainlinkPriceFeed.sol</code> contract sources reliable, tamper-proof prices for all supported assets. The main <code className="text-xs bg-black/10 px-1 py-0.5 rounded">LayerZeroLending.sol</code> contract constantly references these feeds to accurately value collateral, calculate borrowing power, and determine liquidation thresholds, forming the foundation of the protocol's financial security.
                   </p>
                 </div>
               </div>

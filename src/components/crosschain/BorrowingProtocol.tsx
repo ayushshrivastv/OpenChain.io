@@ -500,17 +500,6 @@ export function BorrowingProtocol({ networks, selectedNetwork, setSelectedNetwor
         onClose={() => setIsDepositModalOpen(false)}
       />
 
-      <p className="text-white/80 mb-8">
-        Use your supplied assets as collateral to borrow against them. The assets you borrow can be on any supported chain.
-      </p>
-
-      <button
-        onClick={() => setIsBorrowModalOpen(true)}
-        className="bg-purple-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-purple-700 transition-colors"
-      >
-        Start Borrowing
-      </button>
-
       <BorrowModal
         isOpen={isBorrowModalOpen}
         onClose={() => setIsBorrowModalOpen(false)}

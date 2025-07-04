@@ -4,46 +4,46 @@ import React from 'react';
 
 const newsArticles = [
   {
-    title: "Chainlink CCIP Officially Launches on Mainnet, Enabling Secure Cross-Chain Applications",
-    source: "Chainlink Blog",
-    excerpt: "The Chainlink Cross-Chain Interoperability Protocol (CCIP) has officially launched on the mainnet, providing a new standard for secure cross-chain communication and token transfers.",
-    href: "https://blog.chain.link/ccip-mainnet-early-access/",
-    category: "Chainlink CCIP"
+    title: "LayerZero V2 Live on Mainnet",
+    source: "LayerZero Labs",
+    excerpt: "LayerZero V2 is now live, introducing a modular security stack, decentralized verifier network, and unified semantics to enhance cross-chain interoperability.",
+    href: "https://docs.layerzero.network/v2",
+    category: "LayerZero"
   },
   {
-    title: "Solana's Latest Update Promises Increased Network Performance and Lower Fees",
-    source: "Solana Foundation",
-    excerpt: "The new v1.18 update for the Solana network focuses on optimizing transaction processing and reducing fees, further enhancing its scalability for dApps.",
-    href: "https://solana.com/news",
-    category: "Solana"
+    title: "Understanding the LayerZero Protocol",
+    source: "LayerZero Scan",
+    excerpt: "A deep dive into the architecture of LayerZero, explaining how its endpoint-based system enables direct, secure messaging between blockchains without intermediate chains.",
+    href: "https://layerzeroscan.com/",
+    category: "Technology"
   },
   {
-    title: "The Rise of Cross-Chain Lending Protocols: A New DeFi Paradigm",
-    source: "DeFi Pulse",
-    excerpt: "Learn how protocols are leveraging technologies like CCIP to allow users to lend and borrow assets across different blockchains without the need for traditional bridges.",
-    href: "https://defipulse.com/",
-    category: "DeFi"
+    title: "The Future is Omnichain: Building Applications with LayerZero",
+    source: "LayerZero Blog",
+    excerpt: "Explore the possibilities of building omnichain applications that exist and compose across multiple blockchains, creating a seamless user experience.",
+    href: "https://medium.com/layerzero-official",
+    category: "Development"
   },
   {
-    title: "How Chainlink Data Feeds Continue to Secure the DeFi Ecosystem",
-    source: "Chainlink Blog",
-    excerpt: "A deep dive into the architecture of Chainlink Data Feeds and their critical role in providing reliable, decentralized data for leading DeFi protocols.",
-    href: "https://blog.chain.link/data-feeds/",
-    category: "Chainlink"
+    title: "LayerZero Passes 100 Million Messages, Securing Billions in Value",
+    source: "Crypto Briefing",
+    excerpt: "The LayerZero protocol has now facilitated over 100 million cross-chain messages, demonstrating its robustness and growing adoption in the Web3 ecosystem.",
+    href: "#",
+    category: "Milestone"
   },
   {
-    title: "Building a Cross-Chain Future: Top Projects to Watch on Solana",
-    source: "Solana News",
-    excerpt: "Explore the innovative projects on Solana that are pushing the boundaries of cross-chain interoperability and creating a more connected blockchain ecosystem.",
-    href: "https://solana.com/news",
-    category: "Solana"
-  },
-  {
-    title: "Understanding Security in Cross-Chain Protocols: What to Look For",
+    title: "How LayerZero's V2 Security Stack Protects Against Cross-Chain Hacks",
     source: "Web3 Security Today",
-    excerpt: "As cross-chain interactions become more common, understanding the security models of protocols like CCIP is essential for users and developers.",
+    excerpt: "An analysis of the new security features in LayerZero V2, including the role of Verifiers and Executors in preventing common cross-chain attack vectors.",
     href: "#",
     category: "Security"
+  },
+  {
+    title: "A Guide to the LayerZero Omnichain Block Explorer",
+    source: "LayerZero Scan",
+    excerpt: "Learn how to use LayerZero Scan to track and verify cross-chain transactions, providing transparency and insight into omnichain activity.",
+    href: "https://layerzeroscan.com/",
+    category: "Tools"
   }
 ];
 

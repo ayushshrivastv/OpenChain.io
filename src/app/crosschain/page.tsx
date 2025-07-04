@@ -62,9 +62,9 @@ export default function CrossChainPage() {
         </div>
         <div className="pb-4">
           <Image
-            src="/Chinlink.png"
-            alt="Powered by Chainlink"
-            width={120}
+            src="/layerzero.webp"
+            alt="Powered by LayerZero"
+            width={100}
             height={40}
             className="object-contain"
           />
