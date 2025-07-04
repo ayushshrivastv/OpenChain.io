@@ -1,4 +1,4 @@
-# My LayerZero Migration Journey - A New Chapter for OpenChain
+# LayerZero Migration Journey - A New Chapter for OpenChain
 
 ## Why I Made the Switch
 
@@ -52,9 +52,35 @@ const config: WriteContractParameters = {
 };
 ```
 
-### 3. The Ghost in the UI
+### 3. Abstracting the Logic: The `useLayerZero` Hook
+
+As I started refactoring other components like the [`BorrowingProtocol.tsx`](src/components/crosschain/BorrowingProtocol.tsx) and the [`TransactionModal.tsx`](src/components/TransactionModal.tsx), I realized I was repeating myself. To keep the code clean and avoid bugs, I centralized all LayerZero interactions into a single, powerful custom hook: [`src/hooks/useLayerZero.ts`](src/hooks/useLayerZero.ts).
+
+This hook became the single source of truth for all cross-chain actions. I implemented the core `deposit` function on [line 166](src/hooks/useLayerZero.ts#L166), the complex `borrowCrossChain` function on [line 218](src/hooks/useLayerZero.ts#L218), and the `repayCrossChain` function on [line 273](src/hooks/useLayerZero.ts#L273). Now, any component could simply call these functions without needing to know the low-level details of LayerZero.
+
+### 4. The Ghost in the UI
 
 Just when I thought I was done, one final, infuriating bug appeared. My transactions were succeeding on-chain, but the UI would get stuck on the "Processing" screen forever. It was a ghost in the machine. It turned out to be a race condition in a `useEffect` hook on [line 109](src/components/DepositModal.tsx#L109). My state-clearing logic was wiping the transaction hash before the `useWaitForTransactionReceipt` hook could see the confirmation. The fix was simple but crucial: I added a check to ensure the state wasn't cleared while a transaction was still confirming.
+
+## The Perfect Use: LayerZero and Chainlink
+
+Choosing LayerZero wasn't about replacing Chainlink; it was about using the best tool for each job to build the most robust protocol possible.
+
+### LayerZero: The "How"
+
+I think of LayerZero as the protocol's nervous system. It answers the question of **how** information gets from one chain to another. Its OApp standard provides a flexible, gas-efficient, and highly configurable messaging layer. It's perfect for sending instructions, synchronizing state, and relaying complex data between contracts. When a user on Sepolia wants to borrow against their collateral to receive assets on another chain, LayerZero is the engine that securely transmits that command.
+
+### Chainlink: The "What"
+
+If LayerZero is the "how," Chainlink is the "what." It is the source of undeniable, on-chain truth. For a lending protocol, the single most critical piece of data is the price of the assets. The entire system of collateralization, borrowing power, and liquidations rests on having accurate, real-time, and tamper-proof price data.
+
+This is where Chainlink Price Feeds are non-negotiable. Using a less secure oracle would be like building a skyscraper on a foundation of sand. The protocol's financial integrity is guaranteed by the reliability of Chainlink's data.
+
+### A Symbiotic Relationship
+
+The synergy between these two technologies is what makes OpenChain truly powerful. A liquidation event, for example, is **determined** by rock-solid Chainlink price data. But the **execution** of that event—notifying the borrower, alerting liquidation bots, and settling the debt across chains—can be orchestrated by fast and efficient LayerZero messages.
+
+This separation of concerns creates a "best-of-both-worlds" architecture. It combines Chainlink's industry-leading security for mission-critical data with LayerZero's speed and flexibility for cross-chain communication. The result is a protocol that is safer, more efficient, and more powerful than it could ever be with just one technology alone.
 
 ## Looking Back on the Leap
 
