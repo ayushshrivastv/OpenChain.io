@@ -28,13 +28,13 @@ Thank You, Bharath for patiently answering every question on Discord—it made w
 
 ### Your Portal to Crosschain Liquidity. Lend, borrow, and manage assets anywhere.
 
-<img src="https://github.com/user-attachments/assets/f430b08a-06b4-4965-abef-a898a58e160b" width="700"/>
+<img src="https://github.com/user-attachments/assets/a0ee2b82-f0ca-4d73-8400-da5a4e082ca4" width="700"/>
 
 ### Cross Chain: Unlock Liquidity Across All Blockchains
 
 <img src="https://github.com/user-attachments/assets/595abe54-c739-4d55-9c06-7047a4a0cfef" width="700"/>
 
-<img src="https://github.com/user-attachments/assets/d516ef04-0c39-4511-af4f-816b04d1b819" width="700"/>
+<img src="https://github.com/user-attachments/assets/650ab50e-bd6a-44c7-9fcc-9c33513679a8" width="700"/>
 
 
 ## How It Actually Works
