@@ -25,8 +25,8 @@ export function Dashboard() {
                 <Image
                   src="/layerzero.webp"
                   alt="LayerZero Logo"
-                  width={240}
-                  height={240}
+                  width={180}
+                  height={180}
                   className="object-contain"
                 />
               </div>
