@@ -176,17 +176,7 @@ export function LeftSidebar({ isOpen, onClose }: LeftSidebarProps) {
                 </button>
               </div>
 
-              <div>
-                <h3 className="font-bold text-lg text-[#031138] mb-2">Important Notice</h3>
-                <div className="bg-black/5 p-4 rounded-xl text-sm text-[#031138]/90 space-y-2">
-                  <p>
-                    <strong>Chainlink Hackathon Project:</strong> OpenChain was designed and built in just a few days for a Chainlink Hackathon.
-                  </p>
-                  <p>
-                    <strong>Testnet Advisory:</strong> As this is a rapidly developed project, it is strongly advised to only interact with the protocol on a testnet network for evaluation and testing purposes.
-                  </p>
-                </div>
-              </div>
+
 
             </div>
           </div>
