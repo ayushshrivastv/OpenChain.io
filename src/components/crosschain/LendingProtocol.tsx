@@ -163,7 +163,7 @@ export function LendingProtocol({ networks, selectedNetwork, setSelectedNetwork 
           {
             symbol: 'SOL',
             name: 'Solana',
-            address: '46PEhxKNPS6TNy6SHuMBF6eAXR54onGecnLXvv52uwWJ', // Your Solana Program
+            address: 'AiTX9Gr1KjTcExetmdpP7PeoYWnY3MpSNbPBpDu9UPrB', // Deployed Solana Program
             network: 'Solana Devnet',
             contractType: 'Solana Program (Anchor)',
             balance: 'N/A', // Balance fetching needs Solana integration

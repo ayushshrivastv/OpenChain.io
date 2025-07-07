@@ -11,6 +11,7 @@ const TechIcon = ({ d }: { d: string }) => (
 
 const sections = [
     { id: 'layerzero', title: 'LayerZero', icon: "M12 2l-8 8h16L12 2zM4 14h16v6H4v-6z" },
+    { id: 'solana', title: 'Solana Integration', icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" },
     { id: 'price-feeds', title: 'Chainlink Price Feeds', icon: "M3 6l3 6h12l3-6H3zM3 18h18" },
     { id: 'automation', title: 'Chainlink Automation', icon: "M12 1v3m0 16v3m8.4-14.4l-2.1 2.1m-12.6 0L3.6 7.6M23 12h-3M4 12H1m16.4 8.4l-2.1-2.1M7.6 3.6L5.7 5.7" },
     { id: 'vrf', title: 'Chainlink VRF', icon: "M16 3.13a4 4 0 0 1 0 7.75L12 15l-4-4.12a4 4 0 0 1 0-7.75" },
@@ -72,11 +73,37 @@ const DocsPage = () => {
               </div>
             </article>
 
-            {/* Technology Insight Card: Price Feeds */}
-            <article id="price-feeds" className="scroll-mt-24 bg-[#F9DDC7] text-[#031138] p-8 rounded-2xl shadow-lg transition-shadow hover:shadow-xl">
+            {/* Technology Insight Card: Solana Integration */}
+            <article id="solana" className="scroll-mt-24 bg-[#F9DDC7] text-[#031138] p-8 rounded-2xl shadow-lg transition-shadow hover:shadow-xl">
               <header className="flex items-center mb-6">
                 <TechIcon d={sections[1].icon} />
                 <h2 className="text-4xl font-extrabold">{sections[1].title}</h2>
+              </header>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-bold text-lg mb-2">Why I've Used It</h3>
+                  <p className="leading-relaxed">To extend the protocol's reach to the high-performance Solana blockchain, enabling fast and cost-effective lending operations while maintaining cross-chain compatibility through LayerZero V2.</p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg mb-2">How It Works in My Protocol</h3>
+                  <p className="leading-relaxed">
+                    My Solana program implements the LayerZero V2 OApp standard using the Anchor framework. The <code className="text-xs bg-black/10 px-1 py-0.5 rounded">lending_pool</code> program deployed at <code className="text-xs bg-black/10 px-1 py-0.5 rounded">AiTX9Gr1KjTcExetmdpP7PeoYWnY3MpSNbPBpDu9UPrB</code> handles cross-chain messaging through real LayerZero endpoint CPIs. This enables seamless asset lending and borrowing between Solana and EVM chains, leveraging Solana's speed and low costs while maintaining interoperability.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg mb-2">Technical Implementation</h3>
+                  <p className="leading-relaxed">
+                    The Solana implementation features comprehensive instructions including <code className="text-xs bg-black/10 px-1 py-0.5 rounded">lz_receive</code> for message reception with replay protection, <code className="text-xs bg-black/10 px-1 py-0.5 rounded">send</code> for cross-chain messaging, and proper PDA-based account management. Fee calculation and native SOL transfers are handled through direct LayerZero endpoint CPIs, ensuring secure and efficient cross-chain operations.
+                  </p>
+                </div>
+              </div>
+            </article>
+
+            {/* Technology Insight Card: Price Feeds */}
+            <article id="price-feeds" className="scroll-mt-24 bg-[#F9DDC7] text-[#031138] p-8 rounded-2xl shadow-lg transition-shadow hover:shadow-xl">
+              <header className="flex items-center mb-6">
+                <TechIcon d={sections[2].icon} />
+                <h2 className="text-4xl font-extrabold">{sections[2].title}</h2>
               </header>
               <div className="space-y-4">
                 <div>
@@ -95,8 +122,8 @@ const DocsPage = () => {
             {/* Technology Insight Card: Automation */}
             <article id="automation" className="scroll-mt-24 bg-[#F9DDC7] text-[#031138] p-8 rounded-2xl shadow-lg transition-shadow hover:shadow-xl">
               <header className="flex items-center mb-6">
-                <TechIcon d={sections[2].icon} />
-                <h2 className="text-4xl font-extrabold">{sections[2].title}</h2>
+                <TechIcon d={sections[3].icon} />
+                <h2 className="text-4xl font-extrabold">{sections[3].title}</h2>
               </header>
               <div className="space-y-4">
                 <div>
@@ -115,8 +142,8 @@ const DocsPage = () => {
             {/* Technology Insight Card: VRF */}
             <article id="vrf" className="scroll-mt-24 bg-[#F9DDC7] text-[#031138] p-8 rounded-2xl shadow-lg transition-shadow hover:shadow-xl">
               <header className="flex items-center mb-6">
-                <TechIcon d={sections[3].icon} />
-                <h2 className="text-4xl font-extrabold">{sections[3].title}</h2>
+                <TechIcon d={sections[4].icon} />
+                <h2 className="text-4xl font-extrabold">{sections[4].title}</h2>
               </header>
               <div className="space-y-4">
                 <div>

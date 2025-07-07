@@ -285,7 +285,7 @@ export function BorrowingProtocol({ networks, selectedNetwork, setSelectedNetwor
           {
             symbol: 'SOL',
             name: 'Solana',
-            address: '46PEhxKNPS6TNy6SHuMBF6eAXR54onGecnLXvv52uwWJ', // Your Solana Program
+            address: 'AiTX9Gr1KjTcExetmdpP7PeoYWnY3MpSNbPBpDu9UPrB', // Deployed Solana Program
             network: 'Solana Devnet',
             contractType: 'Rust Program',
             balance: '12.45',
