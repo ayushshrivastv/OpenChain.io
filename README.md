@@ -28,13 +28,13 @@ Thank You, Bharath for patiently answering every question on Discord—it made w
 
 ### Your Portal to Crosschain Liquidity. Lend, borrow, and manage assets anywhere.
 
-<img src="https://github.com/user-attachments/assets/f430b08a-06b4-4965-abef-a898a58e160b" width="700"/>
+<img src="https://github.com/user-attachments/assets/a0ee2b82-f0ca-4d73-8400-da5a4e082ca4" width="700"/>
 
 ### Cross Chain: Unlock Liquidity Across All Blockchains
 
 <img src="https://github.com/user-attachments/assets/595abe54-c739-4d55-9c06-7047a4a0cfef" width="700"/>
 
-<img src="https://github.com/user-attachments/assets/d516ef04-0c39-4511-af4f-816b04d1b819" width="700"/>
+<img src="https://github.com/user-attachments/assets/650ab50e-bd6a-44c7-9fcc-9c33513679a8" width="700"/>
 
 
 ## How It Actually Works
@@ -54,14 +54,6 @@ For wallet integration, I chose wagmi + viem + RainbowKit. The type safety is in
 The smart contracts are where the real complexity lives. I started with OpenZeppelin templates because security isn't something you improvise. Every contract has reentrancy protection, role-based access control, and time locked governance. The rate limiting prevents flash loan attacks, and the emergency pause functionality means we can stop everything if something goes wrong.
 
 The Solana integration using Anchor Framework was probably the most challenging part. Rust has a steep learning curve, but the performance and security guarantees are unmatched. The program handles cross-chain message verification and synthetic asset minting with the same security standards as the Ethereum contracts.
-
-## Getting Started
-
-Setting up OpenChain is straightforward if you follow the process. Clone the repository from [GitHub](https://github.com/ayushshrivastv/OpenChain), install dependencies with `npm install`, then navigate to `contracts/evm` and `contracts/solana` to install their respective dependencies. Copy the environment template to configure your RPC URLs and API keys - don't skip this step, I learned that the hard way.
-
-Start the development server with `npm run dev`, connect MetaMask to Sepolia testnet, and you're ready to go. Get some testnet ETH from the Sepolia faucet and LINK tokens from Chainlink's faucet. The interface guides you through depositing collateral and borrowing synthetic assets. The whole process takes minutes, not hours.
-
-For developers who want to dig deeper, the smart contract commands are simple: `npm run compile` to build everything, `npm run test` to run the comprehensive test suite with 95%+ coverage, and `npm run deploy:sepolia` to deploy to testnet. Contract verification on Etherscan happens automatically with `npm run verify:sepolia`.
 
 ## What Makes This Different
 
@@ -85,6 +77,4 @@ Building OpenChain taught me that "impossible" usually just means "I haven't fig
 
 *Sometimes the best way to understand DeFi is to build it yourself. This is my attempt at making cross-chain lending accessible to everyone.*
 
----
 
-**Application**: [https://openchains.vercel.app) | **GitHub**: [OpenChain Repository](https://github.com/ayushshrivastv/OpenChain) | **Documentation**: [Technical Docs](https://openchains.vercel.app/docs)

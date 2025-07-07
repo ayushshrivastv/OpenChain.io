@@ -22,13 +22,17 @@ test-sbf = []
 idl-build = ["anchor-lang/idl-build"]
 
 [dependencies]
-# Core Anchor dependencies - using workspace versions
-anchor-lang = "0.29.0"
-anchor-spl = "0.29.0"
+# Core Anchor dependencies 
+anchor-lang = { version = "0.30.1", features = ["init-if-needed"] }
+anchor-spl = "0.30.1"
+solana-program = "1.16"
+spl-token = "3.5.0"
+borsh = "0.10.3"
+sha2 = "0.10.8"
+sha3 = "0.10.8"
+spl-associated-token-account = "2.3.0"
 
-# Serialization - using workspace version
-borsh = { workspace = true }
-
+# Error handling 
 # Error handling - using workspace version
 thiserror = { workspace = true }
 

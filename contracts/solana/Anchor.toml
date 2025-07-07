@@ -1,12 +1,12 @@
 [toolchain]
-anchor_version = "0.29.0"
+anchor_version = "0.31.1"
 
 [features]
 seeds = false
 skip-lint = false
 
 [programs.devnet]
-lending_pool = "46PEhxKNPS6TNy6SHuMBF6eAXR54onGecnLXvv52uwWJ"
+lending_pool = "AiTX9Gr1KjTcExetmdpP7PeoYWnY3MpSNbPBpDu9UPrB"
 
 [programs.mainnet]
 lending_pool = "46PEhxKNPS6TNy6SHuMBF6eAXR54onGecnLXvv52uwWJ"
